@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dog_breeds/models/dog_breed.dart';
 import 'package:dog_breeds/providers/app_provider.dart';
 import 'package:flutter/material.dart';
@@ -19,10 +21,13 @@ class _ImageViewerState extends State<ImageViewer> {
   void fetchDogBreedImages() async {
     try {
       imageUrl = await Provider.of<AppProvider>(context, listen: false).fetchDogBreedImages(widget.dogBreed.name);
+      if (!mounted) return;
       setState(() {
         isLoading = false;
       });
     } catch (e) {
+      print('Error fetching dog breed images: $e');
+      if (!mounted) return;
       setState(() {
         isLoading = false;
       });
@@ -32,9 +37,7 @@ class _ImageViewerState extends State<ImageViewer> {
   @override
   void initState() {
     super.initState();
-    if (mounted) {
-      fetchDogBreedImages();
-    }
+    fetchDogBreedImages();
   }
 
   @override
@@ -45,7 +48,6 @@ class _ImageViewerState extends State<ImageViewer> {
         child: isLoading ? const CircularProgressIndicator() : imageUrl != null ? Hero(
           tag: widget.dogBreed.name,
           transitionOnUserGestures: true,
-          placeholderBuilder: (context, size, widget) => const CircularProgressIndicator(),
           child: Image.network(
             imageUrl!,
             fit: BoxFit.fill,

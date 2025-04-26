@@ -43,6 +43,7 @@ class AppProvider with ChangeNotifier {
         contentPadding: const EdgeInsets.all(10),
         textStyle: const TextStyle(color: Colors.white),
       );
+      isLoading = false;
     }
     notifyListeners();
   }

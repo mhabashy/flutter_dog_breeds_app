@@ -15,31 +15,32 @@ class DetailScreen extends StatefulWidget {
 
 class _DetailScreenState extends State<DetailScreen> {
   late DogBreed dogBreed;
-  String? imageUrl;
-  bool isLoading = true;
+  late String imageUrl;
+  // bool isLoading = true;
 
-  fetchImageUrl() async {
-    try {
-      imageUrl = await Provider.of<AppProvider>(context, listen: false).fetchDogBreedImages(dogBreed.name);
-      setState(() {
-        isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-      SnackBar(
-        content: Text('Error fetching dog breed images: $e'),
-        duration: const Duration(seconds: 2),
-      );
-    }
-  }
+  // fetchImageUrl() async {
+  //   try {
+  //     imageUrl = await Provider.of<AppProvider>(context, listen: false).fetchDogBreedImages(dogBreed.name);
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //   } catch (e) {
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //     SnackBar(
+  //       content: Text('Error fetching dog breed images: $e'),
+  //       duration: const Duration(seconds: 2),
+  //     );
+  //   }
+  // }
 
   @override
   void initState() {
     super.initState();
     dogBreed = widget.dogBreed;
-    fetchImageUrl();
+    imageUrl = Provider.of<AppProvider>(context, listen: false).dogBreedImages[dogBreed.name] ?? '';
+    // fetchImageUrl();
   }
 
   @override
@@ -48,7 +49,7 @@ class _DetailScreenState extends State<DetailScreen> {
       appBar: AppBar(
         title: titleCaseWidget(dogBreed.name),
       ),
-      body: isLoading ? loadingWidget() : SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -70,6 +71,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
               ),
             ),
+            const SizedBox(height: 50),
           ]
         ),
       ),

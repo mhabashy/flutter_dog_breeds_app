@@ -61,6 +61,9 @@ class _HomeScreenState extends State<HomeScreen> {
             leading: ImageViewer(dogBreed),
             trailing: const Icon(Icons.arrow_forward),
             onTap: () {
+              if (!Provider.of<AppProvider>(context, listen: false).dogBreedImages.containsKey(dogBreed.name)) {
+                return;
+              }
               Navigator.push(
                 context,
                 MaterialPageRoute(
