@@ -72,8 +72,21 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             }
           );
-        }) : const Center(
-          child: Text('No dog breeds found, check your internet connection'),
+        }) : Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text('Unable to fetch dog breed, check your internet connection'),
+              const SizedBox(height: 20),
+              TextButton.icon(
+                onPressed: () {
+                  _fetchDogBreeds();
+                },
+                icon: const Icon(Icons.refresh),
+                label: const Text('Refresh'),
+              ),
+            ],
+          ),
         ),
     );
   }
